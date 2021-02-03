@@ -20,7 +20,7 @@ function calculateTotalMortgage(percent, contribution, amount, date) {
 
     let carcass = amount - contribution;
     let months = ((date.getFullYear() - new Date().getFullYear()) * 12 - new Date().getMonth()) + date.getMonth() + 1;
-    let moneyPerMonth = carcass * ((percent / 12) + (percent / 12) / (((1 + (percent / 12))^months) - 1));
+    let moneyPerMonth = carcass * ((percent / 12) + (percent / 12) / (((1 + (percent / 12))**months) - 1));
     let finalResult = moneyPerMonth * months;
     console.log(finalResult.toFixed(2));
     return finalResult.toFixed(2);
