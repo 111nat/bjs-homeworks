@@ -38,37 +38,36 @@ function sum(...args) {
 }
 
 function compareArrays( arr1, arr2 ) {
-    return (arr1.every(elem => arr1.indexOf(elem) == arr2.indexOf(elem))) && (arr2.every(elem => arr2.indexOf(elem) == arr1.indexOf(elem)));
+    return (arr1.length == arr2.length) && arr1.every((elem, index) => arr1[index] == arr2[index]);
 }
 
 function memorize(fn, limit) {
-    const memory = [
-        { args: [3, 4], result: 7 }
-    ];
+    const memory = [];
     return function fun(...arg) {
-        if(memory.find(elem => compareArrays(elem.args, arg)) != undefined) {
-            console.log("Из памяти");
+        const compareFinder = memory.find(elem => compareArrays(elem.args, arg));
+        if(!!compareFinder) {
             return memory.find(elem => compareArrays(elem.args, arg)).result;
-        } else {
-            console.log("Не из памяти");
-            const sum = fn(...arg);
-            memory.push({args: arg, result: sum});
-            if (memory.length > limit) {
-                memory.shift();
-            }
-            return sum;
+        } 
+        const endOfFunction = fn(...arg);
+        memory.push({args: arg, result: endOfFunction});
+        if (memory.length > limit) {
+            memory.shift();
         }
+        return endOfFunction;
+        
     };
 }
 
 const mSum = memorize(sum, 2);
-// console.log(mSum(3, 4)); // 7
-// console.log(mSum(3, 4)); // 7
-// console.log(mSum(1, 3)); // 4
-// console.log(mSum(1, 2)); // 
-// console.log(mSum(1, 4)); // 
-// console.log(mSum(1, 6)); // 
 console.log(mSum(1, 7)); // 
 console.log(mSum(1, 7)); // 
 console.log(mSum(1, 7)); // 
 console.log(mSum(1, 7)); // 
+console.log(compareArrays([8, 9], [6])); // false, разные значения
+console.log(compareArrays([8, 9, 5, 4], [8, 9, 5, 4, 8, 3, 5])); // false, разные значения
+console.log(compareArrays([9, 2, 4, 8, 2], [9, 2, 4])); // false, разные значения
+console.log(compareArrays([1, 2, 3], [2, 3, 1])); // false, разные индексы, хотя и одинаковые значения
+console.log(compareArrays([8, 1, 2], [8, 1, 2])); // true
+console.log(compareArrays([1,2,3], [1,2,3,3,3]));
+console.log(compareArrays([1,2,3,1,2,3], [1,2,3,3,3]));
+console.log(compareArrays([1,2,3,1,2,3,2,1,3], [1,2,3,3,3]));
