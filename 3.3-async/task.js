@@ -37,7 +37,7 @@ class AlarmClock {
                 timeStr = timeStr + ':' + 0 + `${time.getMinutes()}`;
                 return timeStr;
             }
-            return timeStr + new Date().getMinutes();
+            return timeStr + ':' + new Date().getMinutes();
         }
         return `${new Date().getHours()}:${new Date().getMinutes()}`;
        
